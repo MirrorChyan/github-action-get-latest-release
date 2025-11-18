@@ -19,6 +19,9 @@ inputs:
   excludes:
     description: 'Types of releases to exclude (e.g. pre-release)'
     required: false
+  tag:
+    description: 'The tag name to get the release for'
+    required: false
   token:
     description: 'The GitHub token or personal access token'
     required: false
