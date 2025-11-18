@@ -3,8 +3,6 @@ name: Build with ncc
 
 on:
   push:
-    branches:
-    - master
 
 jobs:
   build:
