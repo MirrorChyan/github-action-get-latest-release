@@ -21,30 +21,27 @@ async function run() {
         if (repository){
                 [owner, repo] = repository.split("/");
         }
-        var releases  = await octokit.repos.listReleases({
-            owner: owner,
-            repo: repo,
+        var releases;
+        if (tag) {
+            core.info(`Looking for tag: ${tag}`);
+            const release = await octokit.repos.getReleaseByTag({
+                owner: owner,
+                repo: repo,
+                tag: tag,
             });
-        releases = releases.data;
+            releases = [release.data];
+        } else {
+            const response = await octokit.repos.listReleases({
+                owner: owner,
+                repo: repo,
+            });
+            releases = response.data;
+        }
         if (excludes.includes('prerelease')) {
             releases = releases.filter(x => x.prerelease != true);
         }
         if (excludes.includes('draft')) {
             releases = releases.filter(x => x.draft != true);
-        }
-        if (tag) {
-            core.info(`Looking for tag: ${tag}`);
-            let found = false;
-            for (const rel of releases) {
-                if (tag && rel.tag_name === tag) {
-                    found = true;
-                    releases = [rel];
-                    break;
-                }
-            }
-            if (!found) {
-                releases = [];
-            }
         }
         if (releases.length) {
             core.setOutput('release', releases[0].tag_name);

@@ -7,7 +7,7 @@
     "lint": "eslint main.js",
     "package": "ncc build main.js -o dist",
     "build": "ncc build main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
